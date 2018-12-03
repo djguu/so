@@ -14,7 +14,8 @@
 
     Inserir estas linhas no final do ficheiro
 
-    * ```relayhost = [smtp.gmail.com]:587
+    * ```
+         relayhost = [smtp.gmail.com]:587
          smtp_sasl_auth_enable = yes
          smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
          smtp_sasl_security_options = noanonymous
@@ -60,7 +61,8 @@
 
     Inserir o seguinte texto
 
-```-----BEGIN CERTIFICATE-----
+```
+-----BEGIN CERTIFICATE-----
 MIIDJzCCApCgAwIBAgIBATANBgkqhkiG9w0BAQQFADCBzjELMAkGA1UEBhMCWkExFTATBgNVBAgT
 DFdlc3Rlcm4gQ2FwZTESMBAGA1UEBxMJQ2FwZSBUb3duMR0wGwYDVQQKExRUaGF3dGUgQ29uc3Vs
 dGluZyBjYzEoMCYGA1UECxMfQ2VydGlmaWNhdGlvbiBTZXJ2aWNlcyBEaXZpc2lvbjEhMB8GA1UE
