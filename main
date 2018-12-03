@@ -1,0 +1,10 @@
+#!/bin/bash
+
+
+#curl -s https://api.iextrading.com/1.0/stock/AAPL/chart/1d | jq '.[].marketClose'
+
+#curl -s https://api.coindesk.com/v1/bpi/currentprice.json | jq '.bpi.EUR.rate_float'
+
+
+mail -s "Teste" goncalopcorreia@hotmail.com < body.txt
+
