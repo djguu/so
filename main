@@ -6,7 +6,21 @@
 #curl -s https://api.coindesk.com/v1/bpi/currentprice.json | jq '.bpi.EUR.rate_float'
 
 
-mail -s "Teste" goncalopcorreia@hotmail.com < /home/djguu/Dropbox/Eng_Works/so_work/body.txt
+#mail -s "Teste" goncalopcorreia@hotmail.com < /home/djguu/Dropbox/Eng_Works/so_work/files/body.txt
 
 
-#
+#Transferir o valor deste momento da bitcoin em euro
+cur_last=`awk '/./{line=$0} END{print line}' files/currency.txt`
+cur_now=`curl -s https://api.coindesk.com/v1/bpi/currentprice.json | jq '.bpi.EUR.rate_float'`
+
+if (( $(echo "$cur_last > $cur_now" |bc -l) )); then
+    echo "Bitcoin mais baixa"
+else
+    echo "Bitcoin mais alta"
+fi
+
+
+#curl -s https://api.coindesk.com/v1/bpi/currentprice.json | jq '.bpi.EUR.rate_float' >> files/currency.txt
+
+
+#echo "This is a teste. Here is the value before $cur_last and now $cur_now" | mail -s "Teste" goncalopcorreia@hotmail.com

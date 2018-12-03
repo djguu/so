@@ -98,17 +98,21 @@ Para testar um envio de email basta este codigo
 
 Ou com um ficheiro
 
-```mail -s "Test Postfix" you@example.com < body.txt```
+```mail -s "Test Postfix" you@example.com < files/body.txt```
 
 
 
-## Intrucoes de Criacao de CronJob
+## Instrucoes de Criacao de CronJob
 
-1. Aceder ao ficheiro de configuracao
+1. Copiar os ficheiros para a pasta de crontab
+
+    ```cp -r * /etc/cron.daily/```
+
+2. Aceder ao ficheiro de configuracao
 
     ```crontab -e```
 
-2. Adicionar a seguinte linha
+3. Adicionar a seguinte linha
 
     ```0 0 * * * /path/to/main_file```
 
@@ -128,3 +132,17 @@ Ou com um ficheiro
 ```
 
     Ao gravar se nao der erro o cronjob esta ativo
+
+
+
+
+## Instrucoes para correr o programa
+
+1. Instalar pacotes 
+
+    JQ - serve para descompactar ficheiros json
+    * ```sudo apt-get install jq```
+
+    curl - serve para transferir os ficheiros
+    * ```sudo apt-get install curl```
+
