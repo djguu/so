@@ -23,4 +23,4 @@ fi
 #curl -s https://api.coindesk.com/v1/bpi/currentprice.json | jq '.bpi.EUR.rate_float' >> files/currency.txt
 
 
-#echo "This is a teste. Here is the value before $cur_last and now $cur_now" | mail -s "Teste" goncalopcorreia@hotmail.com
+echo "This is a teste. Here is the value before $cur_last and now $cur_now" | mail -s "Teste" goncalopcorreia@hotmail.com
