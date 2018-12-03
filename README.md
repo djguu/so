@@ -1,6 +1,6 @@
 # API email sender
 
-### Instrucoes de instalacao de email
+## Instrucoes de instalacao de email
 
 1. Instalar Postfix
 
@@ -99,3 +99,32 @@ Para testar um envio de email basta este codigo
 Ou com um ficheiro
 
 ```mail -s "Test Postfix" you@example.com < body.txt```
+
+
+
+## Intrucoes de Criacao de CronJob
+
+1. Aceder ao ficheiro de configuracao
+
+    ```crontab -e```
+
+2. Adicionar a seguinte linha
+
+    ```0 0 * * * /path/to/main_file```
+
+    Esta linha sera responsavel pelo programa correr todos os dias a meia noite.
+
+    Para modificar apenas tera que mudificar da seguinte forma
+
+    ```
+*     *     *     *     *  Command to be executed 
+-     -     -     -     - 
+|     |     |     |     | 
+|     |     |     |     +----- Day of week (0-7) 
+|     |     |     +------- Month (1 - 12) 
+|     |     +--------- Day of month (1 - 31) 
+|     +----------- Hour (0 - 23) 
++------------- Min (0 - 59) 
+```
+
+    Ao gravar se nao der erro o cronjob esta ativo

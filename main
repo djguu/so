@@ -6,5 +6,7 @@
 #curl -s https://api.coindesk.com/v1/bpi/currentprice.json | jq '.bpi.EUR.rate_float'
 
 
-mail -s "Teste" goncalopcorreia@hotmail.com < body.txt
+mail -s "Teste" goncalopcorreia@hotmail.com < /home/djguu/Dropbox/Eng_Works/so_work/body.txt
 
+
+#
