@@ -21,7 +21,7 @@
          smtp_sasl_security_options = noanonymous
          smtp_tls_CAfile = /etc/postfix/cacert.pem
          smtp_use_tls = yes
-      ```
+      ``` 
 
 3. Editar o ficheiro de conta
 
