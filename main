@@ -1,26 +1,99 @@
 #!/bin/bash
 
-
-#curl -s https://api.iextrading.com/1.0/stock/AAPL/chart/1d | jq '.[].marketClose'
-
-#curl -s https://api.coindesk.com/v1/bpi/currentprice.json | jq '.bpi.EUR.rate_float'
-
-
-#mail -s "Teste" goncalopcorreia@hotmail.com < /home/djguu/Dropbox/Eng_Works/so_work/files/body.txt
+#Modifcar estes valores para usar os scripts em questao
+#Valores 0 ou 1
+bitcoin=0
+finance=1
 
 
-#Transferir o valor deste momento da bitcoin em euro
-cur_last=`awk '/./{line=$0} END{print line}' files/currency.txt`
-cur_now=`curl -s https://api.coindesk.com/v1/bpi/currentprice.json | jq '.bpi.EUR.rate_float'`
+#Defina aqui a diferenca os valores que deseja que o email envie na alteracao dos mesmos
 
-if (( $(echo "$cur_last > $cur_now" |bc -l) )); then
-    echo "Bitcoin mais baixa"
-else
-    echo "Bitcoin mais alta"
+#bitcoins
+maxbit=10
+
+#market
+maxmarket=10
+
+
+#Defina aqui o email do destinatario
+
+#bitcoins
+emailbit=teste@something.com
+
+#market
+emailmarket=teste@something.com
+
+
+#Defina aqui o diminutivo da empresa
+#Consegue encontrar no yahoo! finance
+#Exemplos: AAPL, FB, GOOG,...
+dim="AAPL"
+
+
+
+
+#Script Bitcoin
+if [ $bitcoin = 1 ] ; then
+    #Transferir o valor deste momento da bitcoin em euro
+    cur_last=`awk '/./{line=$0} END{print line}' files/currency.txt`
+    cur_now=`curl -s https://api.coindesk.com/v1/bpi/currentprice.json | jq '.bpi.EUR.rate_float'`
+
+    #Verifica qual o valor maior para poder subtrair o maior pelo menor 
+    if (( $(echo "$cur_last > $cur_now" |bc -l) )); then
+        #A moeda baixou o valor desde a ultima vez
+        dif=$(echo $cur_last - $cur_now | bc -l)
+        change="baixou"
+    else
+        #A moeda subiu o valor desde a ultima vez
+        dif=$(echo $cur_now - $cur_last | bc -l)
+        change="aumentou"
+    fi
+
+
+    #Efetua a verificacao da diferenca entre os valores
+    #Caso se verifique uma diferenca maior que a definida este envia email
+    if (( $(echo "$dif > $maxbit" |bc -l) )); then
+        echo -e \
+    "\n     O valor anterior da bitcoin de ontem para hoje $change $dif Euros\n\n\n\
+    Valor anterior: $cur_last Euros\n\n\
+    Valor Atual: $cur_now Euros" \
+    | mail -s "Mudanca de Valor Bitcoin" $emailbit
+        echo "Email Sent"
+    fi
+
+    curl -s https://api.coindesk.com/v1/bpi/currentprice.json | jq '.bpi.EUR.rate_float' >> files/currency.txt
 fi
 
 
-#curl -s https://api.coindesk.com/v1/bpi/currentprice.json | jq '.bpi.EUR.rate_float' >> files/currency.txt
+#Script Finance
+if [ $finance = 1 ] ; then
+    
+    #Transferir o valor deste momento da bitcoin em euro
+    cur_last=`awk '/./{line=$0} END{print line}' files/$dim.txt`
+    cur_now=`curl -s https://api.iextrading.com/1.0/stock/$dim/chart/1d | jq '.[-1].marketClose'`
+
+    #Verifica qual o valor maior para poder subtrair o maior pelo menor 
+    if (( $(echo "$cur_last > $cur_now" |bc -l) )); then
+        #A moeda baixou o valor desde a ultima vez
+        dif=$(echo $cur_last - $cur_now | bc -l)
+        change="baixou"
+    else
+        #A moeda subiu o valor desde a ultima vez
+        dif=$(echo $cur_now - $cur_last | bc -l)
+        change="aumentou"
+    fi
 
 
-echo "This is a teste. Here is the value before $cur_last and now $cur_now" | mail -s "Teste" goncalopcorreia@hotmail.com
+    #Efetua a verificacao da diferenca entre os valores
+    #Caso se verifique uma diferenca maior que a definida este envia email
+    if (( $(echo "$dif > $maxmarket" |bc -l) )); then
+        echo -e \
+    "\n     O valor anterior do mercado de ontem para hoje $change $dif Euros\n\n\n\
+    Valor anterior: $cur_last Euros\n\n\
+    Valor Atual: $cur_now Euros" \
+    | mail -s "Mudanca de Valor do mercado ($dim)" $emailmarket
+        echo "Email Sent"
+    fi
+
+    curl -s https://api.iextrading.com/1.0/stock/$dim/chart/1d | jq '.[-1].marketClose' >> files/$dim.txt
+fi

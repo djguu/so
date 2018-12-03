@@ -4,7 +4,7 @@
 
 1. Instalar Postfix
 
-    * ```sudo apt-get install postfix mailutils libsasl2-2 ca-certificates libsasl2-modules```
+    ```sudo apt-get install postfix mailutils libsasl2-2 ca-certificates libsasl2-modules```
 
    No caso se ainda nao ter instalado o Postfix ira ver uma pagina de setup em que apenas e necessario selecionar "Internet Site" e seguir em frente.
 
@@ -15,13 +15,13 @@
     Inserir estas linhas no final do ficheiro
 
     ```
-         relayhost = [smtp.gmail.com]:587
-         smtp_sasl_auth_enable = yes
-         smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
-         smtp_sasl_security_options = noanonymous
-         smtp_tls_CAfile = /etc/postfix/cacert.pem
-         smtp_use_tls = yes
-      ``` 
+    relayhost = [smtp.gmail.com]:587
+    smtp_sasl_auth_enable = yes
+    smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+    smtp_sasl_security_options = noanonymous
+    smtp_tls_CAfile = /etc/postfix/cacert.pem
+    smtp_use_tls = yes
+    ``` 
 
 3. Editar o ficheiro de conta
 
@@ -90,6 +90,8 @@
 
     ```sudo /etc/init.d/postfix reload```
 
+    (Caso o postfix diga que nao esta ativo basta escrever ```sudo postfix start```)
+
 
 ### Testar envio de email
 
@@ -101,13 +103,13 @@ Ou com um ficheiro
 
 ```mail -s "Test Postfix" you@example.com < files/body.txt```
 
-
+___
 
 ## Instrucoes de Criacao de CronJob
 
 1. Copiar os ficheiros para a pasta de crontab
 
-    ```cp -r * /etc/cron.daily/```
+    ```cp -r ./* /etc/cron.daily/```
 
 2. Aceder ao ficheiro de configuracao
 
@@ -132,10 +134,10 @@ Ou com um ficheiro
     +------------- Min (0 - 59) 
     ```
 
-    Ao gravar se nao der erro o cronjob esta ativo
+    Ao gravar, se nao der erro na formatacao, o cronjob estara ativo
 
 
-
+___
 
 ## Instrucoes para correr o programa
 
@@ -149,3 +151,41 @@ Ou com um ficheiro
     
     ```sudo apt-get install curl```
 
+2. Editar o ficheiro main
+
+    Ira encontrar varios pontos em que teram que substituir pelo respetivo caso em questao
+
+
+    Modifique estas linhas para definir qual ou quais api’s usar (1 – ativo, 0 – desativo)
+    ```bash
+    bitcoin=0
+    finance=1
+    ```
+
+    Modifique estas linhas para definir a diferença entre o valor anterior e o atual para que o email seja enviado
+    ```bash
+    #bitcoins
+    maxbit=10
+
+    #market
+    maxmarket=10
+    ```
+
+    Modifique estas linhas para definir o email de destinatário
+    ```bash
+    #bitcoins
+    emailbit=teste@something.com
+
+    #market
+    emailmarket=teste@something.com
+    ```
+
+    Modifique esta linha para definir a empresa que deseja ver os valores
+
+    Por exemplo Apple – AAPL, Facebook – FB, etc
+
+    Para mais informações visite este link e efetue uma pesquisa
+
+    ```bash
+    dim="AAPL"
+    ```
